@@ -2,14 +2,24 @@
 
 import { useState, useEffect } from 'react';
 import fetchGemData from '../api/fetchGemData';
+import { Button } from './ui/button';
+import { Separator } from './ui/separator';
+import gemData from '../data/combined_skill_gems.json';
+
 
 export default function GemsList() {
   const [gems, setGems] = useState<string[]>([]);
   const [displayedGems, setDisplayedGems] = useState<(string | null)[]>([null, null, null]);
   const [locked, setLocked] = useState<boolean[]>([false, false, false]);
 
+/* This is from trade api, currently not in use
   useEffect(() => {
     fetchGemData().then(setGems);
+  }, []);*/
+
+  useEffect(() => {
+    const formattedGems = gemData.map(item => item.Name);
+    setGems(formattedGems);
   }, []);
 
   const handleReroll = () => {
@@ -28,12 +38,13 @@ export default function GemsList() {
   };
 
   return (
-    <div>
-      <button onClick={handleReroll}>Reroll</button>
+    <div className="flex flex-col items-center">
+      <Button onClick={handleReroll}>Reroll</Button>
       <div className="gem-list">
         {displayedGems.map((gem, index) => (
-          <div key={index} onClick={() => toggleLock(index)} style={{ cursor: 'pointer', color: locked[index] ? 'green' : 'black' }}>
+          <div key={index} onClick={() => toggleLock(index)} className="cursor-pointer text-base text-center mt-4 " style={{ color: locked[index] ? 'green' : 'black' }}>
             {gem}
+            {index < 2 && displayedGems[index + 1] && <Separator className="my-4" />}
           </div>
         ))}
       </div>
