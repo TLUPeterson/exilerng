@@ -61,7 +61,7 @@ export default function GemsList() {
          onClick={() => toggleLock(index)} 
          className={`cursor-pointer text-xl font-medium text-center mt-4 p-3 rounded-md
                     ${locked[index] 
-                      ? 'bg-[#CC9200] text-[#5C4433]' 
+                      ? 'bg-[#FFBF1F] text-[#5C4433]' 
                       : 'bg-[#DBCABD]'
                     } `}
                     style={{ color: gem?.Table === 'Table 1' ? '#EE291B' : gem?.Table === 'Table 2' ? '#008F47' : gem?.Table === 'Table 3' ? '#3C5190' : 'gray-800' }}
