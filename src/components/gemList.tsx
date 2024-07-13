@@ -13,13 +13,12 @@ import {
 
 
 export default function GemsList() {
-  const [gems, setGems] = useState<string[]>([]);
-  const [displayedGems, setDisplayedGems] = useState<(string | null)[]>([null, null, null]);
+  const [gems, setGems] = useState<{ Name: string; Table: string }[]>([]);
+  const [displayedGems, setDisplayedGems] = useState<( { Name: string; Table: string } | null )[]>([null, null, null]);
   const [locked, setLocked] = useState<boolean[]>([false, false, false]);
 
   useEffect(() => {
-    const formattedGems = gemData.map(item => item.Name);
-    setGems(formattedGems);
+    setGems(gemData);
   }, []);
 
   const handleReroll = () => {
@@ -32,6 +31,7 @@ export default function GemsList() {
     });
     setDisplayedGems(newDisplayedGems);
   };
+  
 
   const toggleLock = (index: number) => {
     setLocked(locked.map((lock, i) => (i === index ? !lock : lock)));
@@ -51,24 +51,26 @@ export default function GemsList() {
       </TooltipProvider>
       <Button 
         onClick={handleReroll}
-        className="mb-6 bg-[#FFBF1F] hover:bg-[#CC9200] text-[#261C15] font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out transform hover:scale-105"
+        className="mb-6 bg-[#FFBF1F] hover:bg-[#CC9200] text-[#261C15] font-bold py-2 px-4 rounded-full "
       >
         Reroll
       </Button>
       <div className="gem-list w-full">
-        {displayedGems.map((gem, index) => (
-          <div key={index} 
-               onClick={() => toggleLock(index)} 
-               className={`cursor-pointer text-xl text-center mt-4 p-3 rounded-md transition-colors duration-300 ease-in-out
-                          ${locked[index] 
-                            ? 'bg-[#CC9200] text-[#5C4433]' 
-                            : 'bg-[#DBCABD] text-gray-800'
-                          } hover:bg-[#9E7657]`}
-          >
-            {gem || 'Click Reroll'}
-          </div>
-        ))}
-      </div>
+  {displayedGems.map((gem, index) => (
+    <div key={index} 
+         onClick={() => toggleLock(index)} 
+         className={`cursor-pointer text-xl font-medium text-center mt-4 p-3 rounded-md
+                    ${locked[index] 
+                      ? 'bg-[#CC9200] text-[#5C4433]' 
+                      : 'bg-[#DBCABD]'
+                    } `}
+                    style={{ color: gem?.Table === 'Table 1' ? '#EE291B' : gem?.Table === 'Table 2' ? '#008F47' : gem?.Table === 'Table 3' ? '#3C5190' : 'gray-800' }}
+                    >
+      {gem?.Name || 'Click Reroll'}
+    </div>
+  ))}
+</div>
+
     </div>
   );
 }  
